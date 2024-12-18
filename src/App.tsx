@@ -1,9 +1,27 @@
 import './index.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [name, setName] = useState<string>("");
   const [overall, setOverall] = useState<number | null>(null);
+  const [allPlayers, setAllPlayers] = useState<string[]>([]);
+
+  
+  useEffect(() => {
+    const getAllPlayers = async () => {
+      try {
+        const response = await fetch("/api/v1/players");
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        setAllPlayers(data);
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    };
+
+    getAllPlayers();
+  }, []);
+
 
   const getRatingOfPlayer = async (name: string) => {
     try {

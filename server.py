@@ -16,6 +16,15 @@ def get_data():
        data = {'message': 'Hello from Flask!'}
        return jsonify(data)
 
+# Route to get all players
+@app.route('/api/v1/players', methods=['GET'])
+def get_players():
+    players = collection.find()
+    p = []
+    for player in players:
+        p.append({ 'name': player['name'], 'overall': player['overall'] })
+    return jsonify(p)
+
 # Route to get play by name
 @app.route('/api/v1/player/<name>', methods=['GET'])
 def get_player(name):
