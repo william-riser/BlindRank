@@ -1,3 +1,4 @@
+import './index.css';
 import { useState } from "react";
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className='bg-blue-200 min-h-screen'>
+        <h1 className='text-pink-600'>Tailwind Test</h1>
         <form>
           <input
             type="text"
