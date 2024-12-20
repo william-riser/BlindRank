@@ -3,23 +3,18 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [name, setName] = useState<string>("");
-  const [overall, setOverall] = useState<number | null>(null);
+  const [elo, setelo] = useState<number | null>(null);
   const [allPlayers, setAllPlayers] = useState<string[]>([]);
 
   
   useEffect(() => {
-    const getAllPlayers = async () => {
-      try {
-        const response = await fetch("/api/v1/players");
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data = await response.json();
-        setAllPlayers(data);
-      } catch (error) {
-        console.error("Fetch error:", error);
-      }
-    };
-
-    getAllPlayers();
+    try {
+      fetch("/api/v1/random")
+        .then((response) => response.json())
+        .then((data) => setAllPlayers(data));
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
   }, []);
 
 
@@ -28,7 +23,7 @@ function App() {
       const response = await fetch("/api/v1/player/" + name);
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
-      setOverall(data.overall);
+      setelo(data.elo);
     } catch (error) {
       console.error("Fetch error:", error);
     }
@@ -54,9 +49,9 @@ function App() {
             Submit
           </button>
         </form>
-        {overall !== null && (
+        {elo !== null && (
           <p>
-            {name} has an overall rating of {overall}
+            {name} has an elo rating of {elo}
           </p>
         )}
       </div>

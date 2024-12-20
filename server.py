@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from pymongo import MongoClient
 from flask_cors import CORS
-
+from elo import Player, expectedScore, updateElo
 
 app = Flask(__name__)
 CORS(app)
@@ -22,7 +22,7 @@ def get_players():
     players = collection.find()
     p = []
     for player in players:
-        p.append({ 'name': player['name'], 'overall': player['overall'] })
+        p.append({ 'name': player['name'], 'elo': player['elo'] })
     return jsonify(p)
 
 # Route to get play by name
@@ -30,7 +30,16 @@ def get_players():
 def get_player(name):
     filter = {'name': name}
     player = collection.find_one(filter)
-    p = { 'name': player['name'], 'overall': player['overall'] }
+    p = { 'name': player['name'], 'elo': player['elo'] }
+    return jsonify(p)
+
+# Route to get two random players
+@app.route('/api/v1/random', methods=['GET'])
+def get_random():
+    players = collection.aggregate([{ '$sample': { 'size': 2 } }])
+    p = []
+    for player in players:
+        p.append({ 'name': player['name'], 'elo': player['elo'] })
     return jsonify(p)
 
 
