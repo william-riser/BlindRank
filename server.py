@@ -70,9 +70,9 @@ def vote():
 
         print(f"Winner: {winner}, Loser: {loser}")
 
-        # TODO: Update scores logic here
         winner_player = Player(winner['name'], winner['elo'])
         loser_player = Player(loser['name'], loser['elo'])
+        
         updateElo(winner_player, loser_player)
 
         winnerNewElo = winner_player.getElo()
@@ -81,9 +81,6 @@ def vote():
         print(f"New elo scores: {winnerNewElo}, {loserNewElo}")
         collection.update_one({'_id': ObjectId(winner_id)}, {'$set': {'elo': winnerNewElo}})
         collection.update_one({'_id': ObjectId(loser_id)}, {'$set': {'elo': loserNewElo}})
-
-
-
 
         return jsonify({'message': 'Vote recorded successfully'}), 200
     except Exception as e:

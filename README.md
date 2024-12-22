@@ -1,4 +1,4 @@
 # BlindRank
 
-Currently just react + flask + mongo boilerplate \
-more inc
+Website to rank players blindly \
+Implements an elo system to dynamically update rank
