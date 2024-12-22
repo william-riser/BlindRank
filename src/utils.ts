@@ -17,10 +17,6 @@ class Player {
         const playerJson = json as { id: string; name: string; elo: number };
         return new Player(playerJson.id, playerJson.name, playerJson.elo);
     }
-
-
-
-
 }
 
 export default Player;

@@ -9,7 +9,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player }: PlayerCardProps) => {
     
 
     return (
-        <div>
+        <div className='bg-blue-200 p-4 m-4 rounded-xl w-full'>
             <h2>{player.name}</h2>
             <p>Elo: {player.elo}</p>
         </div>
