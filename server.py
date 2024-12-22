@@ -46,5 +46,6 @@ def get_random():
     serialized_players = [serialize_document(player) for player in players]
     return jsonify(serialized_players)
 
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,8 +3,8 @@ import Player from "../utils";
 import PlayerCard from "../components/PlayerCard";
 
 const VotePage: React.FC = () => {
-  const [player1, setPlayer1] = React.useState<Player | null>();
-  const [player2, setPlayer2] = React.useState<Player | null>();
+  const [player1, setPlayer1] = React.useState<Player | null>(null);
+  const [player2, setPlayer2] = React.useState<Player | null>(null);
 
   const getTwoRandomPlayers = async () => {
     try {
@@ -29,8 +29,8 @@ const VotePage: React.FC = () => {
         Get two random players
       </button>
       <div className="flex w-full">
-        {player1 && <PlayerCard player={player1} />}
-        {player2 && <PlayerCard player={player2} />}
+        {player1 && <PlayerCard player={player1} opponent={player2} />}
+        {player2 && <PlayerCard player={player2} opponent={player1} />}
       </div>
     </div>
   );
