@@ -1,3 +1,5 @@
+import PlayerCard from './components/PlayerCard';
+import Player from './utils';
 import './index.css';
 import { useEffect, useState } from "react";
 
@@ -31,29 +33,14 @@ function App() {
 
   return (
     <>
-      <div className='bg-blue-200 min-h-screen'>
-        <h1 className='text-pink-600'>Tailwind Test</h1>
-        <form>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              getRatingOfPlayer(name);
-            }}
-          >
-            Submit
-          </button>
-        </form>
-        {elo !== null && (
-          <p>
-            {name} has an elo rating of {elo}
-          </p>
-        )}
+      <div className='bg-blue-200 min-h-screen p-2'>
+        {
+          allPlayers.map((player) => (
+            <div key={player} className='bg-white p-4 rounded-md w-1/4'>
+              <PlayerCard player={Player.fromJson(player)} />
+            </div>
+          ))
+        }
       </div>
     </>
   );
