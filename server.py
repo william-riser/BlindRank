@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
 from flask_cors import CORS
+from elo import Player, expectedScore, updateElo
 
 app = Flask(__name__)
 CORS(app)
@@ -45,6 +46,8 @@ def get_random():
     players = collection.aggregate([{ '$sample': { 'size': 2 } }])
     serialized_players = [serialize_document(player) for player in players]
     return jsonify(serialized_players)
+
+# Route to record a vote
 @app.route('/api/v1/vote', methods=['POST'])
 def vote():
     try:
@@ -68,6 +71,19 @@ def vote():
         print(f"Winner: {winner}, Loser: {loser}")
 
         # TODO: Update scores logic here
+        winner_player = Player(winner['name'], winner['elo'])
+        loser_player = Player(loser['name'], loser['elo'])
+        updateElo(winner_player, loser_player)
+
+        winnerNewElo = winner_player.getElo()
+        loserNewElo = loser_player.getElo()
+
+        print(f"New elo scores: {winnerNewElo}, {loserNewElo}")
+        collection.update_one({'_id': ObjectId(winner_id)}, {'$set': {'elo': winnerNewElo}})
+        collection.update_one({'_id': ObjectId(loser_id)}, {'$set': {'elo': loserNewElo}})
+
+
+
 
         return jsonify({'message': 'Vote recorded successfully'}), 200
     except Exception as e:
