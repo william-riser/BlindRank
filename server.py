@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
 from flask_cors import CORS
@@ -45,6 +45,35 @@ def get_random():
     players = collection.aggregate([{ '$sample': { 'size': 2 } }])
     serialized_players = [serialize_document(player) for player in players]
     return jsonify(serialized_players)
+@app.route('/api/v1/vote', methods=['POST'])
+def vote():
+    try:
+        data = request.get_json()
+        winner_id = data.get('winnerId')
+        loser_id = data.get('loserId')
+
+        if not winner_id or not loser_id:
+            return jsonify({'error': 'Missing winnerId or loserId'}), 400
+
+        try:
+            winner = collection.find_one({'_id': ObjectId(winner_id)})
+            loser = collection.find_one({'_id': ObjectId(loser_id)})
+        except Exception as e:
+            print(f"Error in ObjectId conversion: {e}")
+            return jsonify({'error': 'Invalid ID format'}), 400
+
+        if not winner or not loser:
+            return jsonify({'error': 'Players not found'}), 404
+
+        print(f"Winner: {winner}, Loser: {loser}")
+
+        # TODO: Update scores logic here
+
+        return jsonify({'message': 'Vote recorded successfully'}), 200
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
 
 
 if __name__ == '__main__':

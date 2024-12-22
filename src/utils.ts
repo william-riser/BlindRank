@@ -1,22 +1,28 @@
 
 class Player {
-    id: string;
+    _id: string;
     name: string;
     elo: number;
-    constructor(id: string, name: string, elo: number) {
-        this.id = id;
+    constructor(_id: string, name: string, elo: number) {
+        this._id = _id;
         this.name = name;
         this.elo = elo;
     }
 
-
     static fromJson(json: unknown): Player {
         if (typeof json !== 'object' || json === null) {
-            throw new Error('Invalid JSON');
+            throw new Error('Invalid JSON: Not an object');
         }
-        const playerJson = json as { id: string; name: string; elo: number };
-        return new Player(playerJson.id, playerJson.name, playerJson.elo);
+    
+        const { _id, name, elo } = json as { _id: string; name: string; elo: number };
+    
+        if (typeof _id !== 'string' || typeof name !== 'string' || typeof elo !== 'number') {
+            throw new Error('Invalid JSON: Missing or incorrect fields');
+        }
+    
+        return new Player(_id, name, elo);
     }
+    
 }
 
 export default Player;
