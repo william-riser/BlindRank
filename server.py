@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
 from flask_cors import CORS
-from elo import Player, expectedScore, updateElo
+from utils.elo import Player, expectedScore, updateElo
 
 app = Flask(__name__)
 CORS(app)
