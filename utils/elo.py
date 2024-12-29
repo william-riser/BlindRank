@@ -1,5 +1,6 @@
 import math
 
+# Represents a player with a name and an elo score
 class Player:
     def __init__(self, name, elo):
         self.name = name
