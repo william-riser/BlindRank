@@ -1,4 +1,5 @@
 
+// Represents a player with an ID, name, and Elo rating
 class Player {
     _id: string;
     name: string;
@@ -9,6 +10,7 @@ class Player {
         this.elo = elo;
     }
 
+    // Converts a JSON object to a Player instance
     static fromJson(json: unknown): Player {
         if (typeof json !== 'object' || json === null) {
             throw new Error('Invalid JSON: Not an object');
